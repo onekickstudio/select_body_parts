@@ -35,7 +35,21 @@ class _FrontBodyState extends State<FrontBody> {
   Future<void> _precacheSvg() async {
     if (_svgReady.isCompleted) return;
     try {
-      SvgPicture.asset('assets/front_body.svg');
+      SvgPicture.asset(
+        'assets/front_body.svg',
+        imageBuilder: (_, child) {
+          debugPrint('Returning FrontBody SVG precache.');
+          return child;
+        },
+        placeholderBuilder: (_) {
+          debugPrint('Returning FrontBody placeholder widget precache.');
+          return const SizedBox.shrink();
+        },
+        errorBuilder: (_, error, stackTrace) {
+          debugPrint('PRECACHE: $error');
+          return const SizedBox.shrink();
+        },
+      );
       _svgReady.complete();
     } catch (_) {
       _svgReady.completeError('Failed to load front_body.svg');
@@ -67,7 +81,18 @@ class _FrontBodyState extends State<FrontBody> {
                             ? ColorFilter.mode(
                                 widget.bodyOutlineColor!, BlendMode.srcIn)
                             : null,
-                        placeholderBuilder: (_) => const SizedBox.shrink(),
+                        imageBuilder: (_, child) {
+                          debugPrint('Returning FrontBody SVG.');
+                          return child;
+                        },
+                        placeholderBuilder: (_) {
+                          debugPrint('Returning FrontBody placeholder widget.');
+                          return const SizedBox.shrink();
+                        },
+                        errorBuilder: (_, error, stackTrace) {
+                          debugPrint('$error');
+                          return const SizedBox.shrink();
+                        },
                       );
                     },
                   ),
