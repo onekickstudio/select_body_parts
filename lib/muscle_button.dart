@@ -6,23 +6,32 @@ import 'package:select_body_parts/muscle_path_painter.dart';
 class MuscleButton extends StatelessWidget {
   final String bodyShapePath;
   final String bodyPartName;
+  final Color selectedColor;
+  final Color unselectedColor;
+  final double lineThickness;
 
   const MuscleButton({
     super.key,
     required this.bodyShapePath,
     required this.bodyPartName,
+    this.selectedColor = Colors.red,
+    this.unselectedColor = Colors.white,
+    this.lineThickness = 0,
   });
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<BodyPartProvider>(context);
-    bool isActive = provider.isSelected(bodyPartName);
+    final provider = context.watch<BodyPartProvider>();
     return GestureDetector(
-      onTap: () {
-        provider.toggleSelection(bodyPartName);
-      },
+      onTap: () => provider.toggleSelection(bodyPartName),
       child: CustomPaint(
-        painter: MusclePathPainter(pathData: bodyShapePath, isAcitve: isActive),
+        painter: MusclePathPainter(
+          pathData: bodyShapePath,
+          isActive: provider.isSelected(bodyPartName),
+          activeColor: selectedColor,
+          passiveColor: unselectedColor,
+          strokeWidth: lineThickness,
+        ),
       ),
     );
   }

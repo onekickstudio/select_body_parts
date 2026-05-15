@@ -12,10 +12,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => BodyPartProvider())
-      ],
+    return ChangeNotifierProvider(
+      create: (_) => BodyPartProvider(),
       child: const MaterialApp(
         home: MyHomePage(),
       ),
@@ -28,22 +26,24 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<BodyPartProvider>(context);
-    String selectecParts = provider.selectedMuscles.join(", ");
+    final provider = context.watch<BodyPartProvider>();
+    final selectedParts = provider.selectedMuscles.join(", ");
     return Scaffold(
       backgroundColor: Colors.black45,
       body: Center(
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
+            children: [
               const BackBody(),
               Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Text("Selected Parts:\n$selectecParts",
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(color: Colors.blue, fontSize: 17)),
-              )
+                padding: const EdgeInsets.all(15),
+                child: Text(
+                  "Selected Parts:\n$selectedParts",
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: Colors.blue, fontSize: 17),
+                ),
+              ),
             ],
           ),
         ),

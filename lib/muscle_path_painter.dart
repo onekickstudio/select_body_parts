@@ -2,39 +2,59 @@ import 'package:flutter/material.dart';
 import 'package:path_drawing/path_drawing.dart';
 
 class MusclePathPainter extends CustomPainter {
-  String pathData;
-  bool isAcitve;
-  Color activeColor;
-  Color passiveColor;
-  MusclePathPainter(
-      {required this.pathData,
-      required this.isAcitve,
-      this.activeColor = Colors.red,
-      this.passiveColor = Colors.white});
+  final String pathData;
+  final bool isActive;
+  final Color activeColor;
+  final Color passiveColor;
+  final double strokeWidth;
+
+  static final Map<String, Path> _parsedPaths = {};
+
+  const MusclePathPainter({
+    required this.pathData,
+    required this.isActive,
+    this.activeColor = Colors.red,
+    this.passiveColor = Colors.white,
+    this.strokeWidth = 0,
+  });
+
+  Path _getParsedPath() {
+    return _parsedPaths.putIfAbsent(pathData, () => parseSvgPathData(pathData));
+  }
+
   @override
   void paint(Canvas canvas, Size size) {
-    Path path = parseSvgPathData(pathData);
-    path = path.transform(Matrix4.diagonal3Values(0.4, 0.4, 1.0).storage);
+    var path = _getParsedPath()
+        .transform(Matrix4.diagonal3Values(0.4, 0.4, 1.0).storage);
 
-    // Ortalamak için x ve y eksenindeki offset değerlerini hesaplıyoruz
-    Offset offset = Offset(
-      (size.width - path.getBounds().width) / 2 - path.getBounds().left,
-      (size.height - path.getBounds().height) / 2 - path.getBounds().top,
+    final bounds = path.getBounds();
+    final offset = Offset(
+      (size.width - bounds.width) / 2 - bounds.left,
+      (size.height - bounds.height) / 2 - bounds.top,
     );
-
-    // Path'i merkezde tutmak için hesaplanan offset ile kaydırıyoruz
     path = path.shift(offset);
 
-    final paint = Paint()
-      ..color = isAcitve ? activeColor : passiveColor
+    final fillPaint = Paint()
+      ..color = isActive ? activeColor : passiveColor
       ..style = PaintingStyle.fill;
+    canvas.drawPath(path, fillPaint);
 
-    canvas.drawPath(path, paint);
+    if (strokeWidth > 0) {
+      final strokePaint = Paint()
+        ..color = isActive ? activeColor : passiveColor
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = strokeWidth;
+      canvas.drawPath(path, strokePaint);
+    }
   }
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return (oldDelegate as MusclePathPainter).isAcitve != isAcitve ||
-        (oldDelegate).pathData != pathData;
+    final old = oldDelegate as MusclePathPainter;
+    return old.isActive != isActive ||
+        old.pathData != pathData ||
+        old.activeColor != activeColor ||
+        old.passiveColor != passiveColor ||
+        old.strokeWidth != strokeWidth;
   }
 }
