@@ -37,6 +37,7 @@ class _FrontBodyState extends State<FrontBody> {
     try {
       SvgPicture.asset(
         'assets/front_body.svg',
+        package: 'select_body_parts',
         imageBuilder: (_, child) {
           debugPrint('Returning FrontBody SVG precache.');
           return child;
@@ -77,6 +78,7 @@ class _FrontBodyState extends State<FrontBody> {
                       }
                       return SvgPicture.asset(
                         'assets/front_body.svg',
+                        package: 'select_body_parts',
                         colorFilter: widget.bodyOutlineColor != null
                             ? ColorFilter.mode(
                                 widget.bodyOutlineColor!, BlendMode.srcIn)
