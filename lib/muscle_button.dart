@@ -8,6 +8,7 @@ class MuscleButton extends StatelessWidget {
   final String bodyPartName;
   final Color selectedColor;
   final Color unselectedColor;
+  final Color outlineColor;
   final double lineThickness;
 
   const MuscleButton({
@@ -16,6 +17,7 @@ class MuscleButton extends StatelessWidget {
     required this.bodyPartName,
     this.selectedColor = Colors.red,
     this.unselectedColor = Colors.white,
+    this.outlineColor = Colors.black,
     this.lineThickness = 0,
   });
 

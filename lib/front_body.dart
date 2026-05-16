@@ -1,20 +1,22 @@
-import 'dart:async';
+// import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
+// import 'package:flutter/services.dart';
+// import 'package:flutter_svg/svg.dart';
 import 'package:select_body_parts/body_part_paths.dart';
 import 'package:select_body_parts/muscle_button.dart';
 
 class FrontBody extends StatefulWidget {
   final Color selectedMuscleColor;
   final Color unselectedMuscleColor;
+  final Color outlineColor;
   final double lineThickness;
 
   const FrontBody({
     super.key,
     this.selectedMuscleColor = Colors.red,
     this.unselectedMuscleColor = Colors.white,
+    this.outlineColor = Colors.black,
     this.lineThickness = 0,
   });
 
@@ -23,33 +25,33 @@ class FrontBody extends StatefulWidget {
 }
 
 class _FrontBodyState extends State<FrontBody> {
-  final _svgReady = Completer<void>();
-  late SvgPicture _svg;
+  // final _svgReady = Completer<void>();
+  // late SvgPicture _svg;
 
   @override
   void initState() {
     super.initState();
-    _precacheSvg();
+    // _precacheSvg();
   }
 
-  Future<void> _precacheSvg() async {
-    if (_svgReady.isCompleted) return;
-    try {
-      final AssetManifest manifest =
-          await AssetManifest.loadFromAssetBundle(rootBundle);
-      final List<String> svgAssetPaths = manifest
-          .listAssets()
-          .where((path) => path.toLowerCase().endsWith('front_body.svg'))
-          .toList();
+  // Future<void> _precacheSvg() async {
+  //   if (_svgReady.isCompleted) return;
+  //   try {
+  //     final AssetManifest manifest =
+  //         await AssetManifest.loadFromAssetBundle(rootBundle);
+  //     final List<String> svgAssetPaths = manifest
+  //         .listAssets()
+  //         .where((path) => path.toLowerCase().endsWith('front_body.svg'))
+  //         .toList();
 
-      String rawXmlContent = await rootBundle.loadString(svgAssetPaths[0]);
-      _svg = SvgPicture.string(rawXmlContent);
+  //     String rawXmlContent = await rootBundle.loadString(svgAssetPaths[0]);
+  //     _svg = SvgPicture.string(rawXmlContent);
 
-      _svgReady.complete();
-    } catch (_) {
-      _svgReady.completeError('Failed to load front_body.svg');
-    }
-  }
+  //     _svgReady.complete();
+  //   } catch (_) {
+  //     _svgReady.completeError('Failed to load front_body.svg');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -61,20 +63,20 @@ class _FrontBodyState extends State<FrontBody> {
           width: 280,
           child: Stack(
             children: [
-              RepaintBoundary(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 1.5),
-                  child: FutureBuilder<void>(
-                    future: _svgReady.future,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState != ConnectionState.done) {
-                        return const SizedBox.shrink();
-                      }
-                      return _svg;
-                    },
-                  ),
-                ),
-              ),
+              // RepaintBoundary(
+              //   child: Padding(
+              //     padding: const EdgeInsets.only(right: 1.5),
+              //     child: FutureBuilder<void>(
+              //       future: _svgReady.future,
+              //       builder: (context, snapshot) {
+              //         if (snapshot.connectionState != ConnectionState.done) {
+              //           return const SizedBox.shrink();
+              //         }
+              //         return _svg;
+              //       },
+              //     ),
+              //   ),
+              // ),
               Align(
                 alignment: const Alignment(-0.22, -0.695),
                 child: SizedBox(
@@ -85,6 +87,7 @@ class _FrontBodyState extends State<FrontBody> {
                     bodyShapePath: BodyPartPaths.leftTrap,
                     selectedColor: widget.selectedMuscleColor,
                     unselectedColor: widget.unselectedMuscleColor,
+                    outlineColor: widget.outlineColor,
                     lineThickness: widget.lineThickness,
                   ),
                 ),
@@ -99,6 +102,7 @@ class _FrontBodyState extends State<FrontBody> {
                     bodyShapePath: BodyPartPaths.rightTrap,
                     selectedColor: widget.selectedMuscleColor,
                     unselectedColor: widget.unselectedMuscleColor,
+                    outlineColor: widget.outlineColor,
                     lineThickness: widget.lineThickness,
                   ),
                 ),
@@ -113,6 +117,7 @@ class _FrontBodyState extends State<FrontBody> {
                     bodyShapePath: BodyPartPaths.rightFrontShoulder,
                     selectedColor: widget.selectedMuscleColor,
                     unselectedColor: widget.unselectedMuscleColor,
+                    outlineColor: widget.outlineColor,
                     lineThickness: widget.lineThickness,
                   ),
                 ),
@@ -127,6 +132,7 @@ class _FrontBodyState extends State<FrontBody> {
                     bodyShapePath: BodyPartPaths.leftFrontShoulder,
                     selectedColor: widget.selectedMuscleColor,
                     unselectedColor: widget.unselectedMuscleColor,
+                    outlineColor: widget.outlineColor,
                     lineThickness: widget.lineThickness,
                   ),
                 ),
@@ -141,6 +147,7 @@ class _FrontBodyState extends State<FrontBody> {
                     bodyShapePath: BodyPartPaths.rightBiceps,
                     selectedColor: widget.selectedMuscleColor,
                     unselectedColor: widget.unselectedMuscleColor,
+                    outlineColor: widget.outlineColor,
                     lineThickness: widget.lineThickness,
                   ),
                 ),
@@ -155,6 +162,7 @@ class _FrontBodyState extends State<FrontBody> {
                     bodyShapePath: BodyPartPaths.leftBiceps,
                     selectedColor: widget.selectedMuscleColor,
                     unselectedColor: widget.unselectedMuscleColor,
+                    outlineColor: widget.outlineColor,
                     lineThickness: widget.lineThickness,
                   ),
                 ),
@@ -169,6 +177,7 @@ class _FrontBodyState extends State<FrontBody> {
                     bodyShapePath: BodyPartPaths.rightChest,
                     selectedColor: widget.selectedMuscleColor,
                     unselectedColor: widget.unselectedMuscleColor,
+                    outlineColor: widget.outlineColor,
                     lineThickness: widget.lineThickness,
                   ),
                 ),
@@ -183,6 +192,7 @@ class _FrontBodyState extends State<FrontBody> {
                     bodyShapePath: BodyPartPaths.leftChest,
                     selectedColor: widget.selectedMuscleColor,
                     unselectedColor: widget.unselectedMuscleColor,
+                    outlineColor: widget.outlineColor,
                     lineThickness: widget.lineThickness,
                   ),
                 ),
@@ -197,6 +207,7 @@ class _FrontBodyState extends State<FrontBody> {
                     bodyShapePath: BodyPartPaths.abdominals,
                     selectedColor: widget.selectedMuscleColor,
                     unselectedColor: widget.unselectedMuscleColor,
+                    outlineColor: widget.outlineColor,
                     lineThickness: widget.lineThickness,
                   ),
                 ),
@@ -211,6 +222,7 @@ class _FrontBodyState extends State<FrontBody> {
                     bodyShapePath: BodyPartPaths.rightFrontArm,
                     selectedColor: widget.selectedMuscleColor,
                     unselectedColor: widget.unselectedMuscleColor,
+                    outlineColor: widget.outlineColor,
                     lineThickness: widget.lineThickness,
                   ),
                 ),
@@ -225,6 +237,7 @@ class _FrontBodyState extends State<FrontBody> {
                     bodyShapePath: BodyPartPaths.leftFrontArm,
                     selectedColor: widget.selectedMuscleColor,
                     unselectedColor: widget.unselectedMuscleColor,
+                    outlineColor: widget.outlineColor,
                     lineThickness: widget.lineThickness,
                   ),
                 ),
@@ -239,6 +252,7 @@ class _FrontBodyState extends State<FrontBody> {
                     bodyShapePath: BodyPartPaths.leftObliques,
                     selectedColor: widget.selectedMuscleColor,
                     unselectedColor: widget.unselectedMuscleColor,
+                    outlineColor: widget.outlineColor,
                     lineThickness: widget.lineThickness,
                   ),
                 ),
@@ -253,6 +267,7 @@ class _FrontBodyState extends State<FrontBody> {
                     bodyShapePath: BodyPartPaths.rightObliques,
                     selectedColor: widget.selectedMuscleColor,
                     unselectedColor: widget.unselectedMuscleColor,
+                    outlineColor: widget.outlineColor,
                     lineThickness: widget.lineThickness,
                   ),
                 ),
@@ -267,6 +282,7 @@ class _FrontBodyState extends State<FrontBody> {
                     bodyShapePath: BodyPartPaths.rightQuad,
                     selectedColor: widget.selectedMuscleColor,
                     unselectedColor: widget.unselectedMuscleColor,
+                    outlineColor: widget.outlineColor,
                     lineThickness: widget.lineThickness,
                   ),
                 ),
@@ -281,6 +297,7 @@ class _FrontBodyState extends State<FrontBody> {
                     bodyShapePath: BodyPartPaths.leftQuad,
                     selectedColor: widget.selectedMuscleColor,
                     unselectedColor: widget.unselectedMuscleColor,
+                    outlineColor: widget.outlineColor,
                     lineThickness: widget.lineThickness,
                   ),
                 ),
@@ -295,6 +312,7 @@ class _FrontBodyState extends State<FrontBody> {
                     bodyShapePath: BodyPartPaths.frontRightCalf,
                     selectedColor: widget.selectedMuscleColor,
                     unselectedColor: widget.unselectedMuscleColor,
+                    outlineColor: widget.outlineColor,
                     lineThickness: widget.lineThickness,
                   ),
                 ),
@@ -309,6 +327,7 @@ class _FrontBodyState extends State<FrontBody> {
                     bodyShapePath: BodyPartPaths.frontLeftCalf,
                     selectedColor: widget.selectedMuscleColor,
                     unselectedColor: widget.unselectedMuscleColor,
+                    outlineColor: widget.outlineColor,
                     lineThickness: widget.lineThickness,
                   ),
                 ),

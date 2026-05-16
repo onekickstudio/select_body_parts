@@ -1,22 +1,22 @@
-import 'dart:async';
+// import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
+// import 'package:flutter/services.dart';
+// import 'package:flutter_svg/svg.dart';
 import 'package:select_body_parts/body_part_paths.dart';
 import 'package:select_body_parts/muscle_button.dart';
 
 class BackBody extends StatefulWidget {
   final Color selectedMuscleColor;
   final Color unselectedMuscleColor;
-  final Color? bodyOutlineColor;
+  final Color outlineColor;
   final double lineThickness;
 
   const BackBody({
     super.key,
     this.selectedMuscleColor = Colors.red,
     this.unselectedMuscleColor = Colors.white,
-    this.bodyOutlineColor,
+    this.outlineColor = Colors.black,
     this.lineThickness = 0,
   });
 
@@ -25,33 +25,33 @@ class BackBody extends StatefulWidget {
 }
 
 class _BackBodyState extends State<BackBody> {
-  final _svgReady = Completer<void>();
-  late SvgPicture _svg;
+  // final _svgReady = Completer<void>();
+  // late SvgPicture _svg;
 
   @override
   void initState() {
     super.initState();
-    _precacheSvg();
+    // _precacheSvg();
   }
 
-  Future<void> _precacheSvg() async {
-    if (_svgReady.isCompleted) return;
-    try {
-      final AssetManifest manifest =
-          await AssetManifest.loadFromAssetBundle(rootBundle);
-      final List<String> svgAssetPaths = manifest
-          .listAssets()
-          .where((path) => path.toLowerCase().endsWith('back_body.svg'))
-          .toList();
+  // Future<void> _precacheSvg() async {
+  //   if (_svgReady.isCompleted) return;
+  //   try {
+  //     final AssetManifest manifest =
+  //         await AssetManifest.loadFromAssetBundle(rootBundle);
+  //     final List<String> svgAssetPaths = manifest
+  //         .listAssets()
+  //         .where((path) => path.toLowerCase().endsWith('back_body.svg'))
+  //         .toList();
 
-      String rawXmlContent = await rootBundle.loadString(svgAssetPaths[0]);
-      _svg = SvgPicture.string(rawXmlContent);
+  //     String rawXmlContent = await rootBundle.loadString(svgAssetPaths[0]);
+  //     _svg = SvgPicture.string(rawXmlContent);
 
-      _svgReady.complete();
-    } catch (_) {
-      _svgReady.completeError('Failed to load back_body.svg');
-    }
-  }
+  //     _svgReady.complete();
+  //   } catch (_) {
+  //     _svgReady.completeError('Failed to load back_body.svg');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -60,20 +60,20 @@ class _BackBodyState extends State<BackBody> {
         height: 500,
         width: 280,
         child: Stack(children: [
-          RepaintBoundary(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 2.1),
-              child: FutureBuilder<void>(
-                future: _svgReady.future,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState != ConnectionState.done) {
-                    return const SizedBox.shrink();
-                  }
-                  return _svg;
-                },
-              ),
-            ),
-          ),
+          // RepaintBoundary(
+          //   child: Padding(
+          //     padding: const EdgeInsets.only(left: 2.1),
+          //     child: FutureBuilder<void>(
+          //       future: _svgReady.future,
+          //       builder: (context, snapshot) {
+          //         if (snapshot.connectionState != ConnectionState.done) {
+          //           return const SizedBox.shrink();
+          //         }
+          //         return _svg;
+          //       },
+          //     ),
+          //   ),
+          // ),
           Align(
             alignment: const Alignment(0.435, -0.62),
             child: SizedBox(
@@ -84,6 +84,7 @@ class _BackBodyState extends State<BackBody> {
                 bodyShapePath: BodyPartPaths.rearShoulderRight,
                 selectedColor: widget.selectedMuscleColor,
                 unselectedColor: widget.unselectedMuscleColor,
+                outlineColor: widget.outlineColor,
                 lineThickness: widget.lineThickness,
               ),
             ),
@@ -98,6 +99,7 @@ class _BackBodyState extends State<BackBody> {
                 bodyShapePath: BodyPartPaths.rearShoulderLeft,
                 selectedColor: widget.selectedMuscleColor,
                 unselectedColor: widget.unselectedMuscleColor,
+                outlineColor: widget.outlineColor,
                 lineThickness: widget.lineThickness,
               ),
             ),
@@ -112,6 +114,7 @@ class _BackBodyState extends State<BackBody> {
                 bodyShapePath: BodyPartPaths.leftTriceps,
                 selectedColor: widget.selectedMuscleColor,
                 unselectedColor: widget.unselectedMuscleColor,
+                outlineColor: widget.outlineColor,
                 lineThickness: widget.lineThickness,
               ),
             ),
@@ -126,6 +129,7 @@ class _BackBodyState extends State<BackBody> {
                 bodyShapePath: BodyPartPaths.rightTriceps,
                 selectedColor: widget.selectedMuscleColor,
                 unselectedColor: widget.unselectedMuscleColor,
+                outlineColor: widget.outlineColor,
                 lineThickness: widget.lineThickness,
               ),
             ),
@@ -140,6 +144,7 @@ class _BackBodyState extends State<BackBody> {
                 bodyShapePath: BodyPartPaths.leftForearm,
                 selectedColor: widget.selectedMuscleColor,
                 unselectedColor: widget.unselectedMuscleColor,
+                outlineColor: widget.outlineColor,
                 lineThickness: widget.lineThickness,
               ),
             ),
@@ -154,6 +159,7 @@ class _BackBodyState extends State<BackBody> {
                 bodyShapePath: BodyPartPaths.rightForearm,
                 selectedColor: widget.selectedMuscleColor,
                 unselectedColor: widget.unselectedMuscleColor,
+                outlineColor: widget.outlineColor,
                 lineThickness: widget.lineThickness,
               ),
             ),
@@ -168,6 +174,7 @@ class _BackBodyState extends State<BackBody> {
                 bodyShapePath: BodyPartPaths.backTraps,
                 selectedColor: widget.selectedMuscleColor,
                 unselectedColor: widget.unselectedMuscleColor,
+                outlineColor: widget.outlineColor,
                 lineThickness: widget.lineThickness,
               ),
             ),
@@ -182,6 +189,7 @@ class _BackBodyState extends State<BackBody> {
                 bodyShapePath: BodyPartPaths.middleTraps,
                 selectedColor: widget.selectedMuscleColor,
                 unselectedColor: widget.unselectedMuscleColor,
+                outlineColor: widget.outlineColor,
                 lineThickness: widget.lineThickness,
               ),
             ),
@@ -196,6 +204,7 @@ class _BackBodyState extends State<BackBody> {
                 bodyShapePath: BodyPartPaths.lowerback,
                 selectedColor: widget.selectedMuscleColor,
                 unselectedColor: widget.unselectedMuscleColor,
+                outlineColor: widget.outlineColor,
                 lineThickness: widget.lineThickness,
               ),
             ),
@@ -210,6 +219,7 @@ class _BackBodyState extends State<BackBody> {
                 bodyShapePath: BodyPartPaths.rightBackLat,
                 selectedColor: widget.selectedMuscleColor,
                 unselectedColor: widget.unselectedMuscleColor,
+                outlineColor: widget.outlineColor,
                 lineThickness: widget.lineThickness,
               ),
             ),
@@ -224,6 +234,7 @@ class _BackBodyState extends State<BackBody> {
                 bodyShapePath: BodyPartPaths.leftBackLat,
                 selectedColor: widget.selectedMuscleColor,
                 unselectedColor: widget.unselectedMuscleColor,
+                outlineColor: widget.outlineColor,
                 lineThickness: widget.lineThickness,
               ),
             ),
@@ -238,6 +249,7 @@ class _BackBodyState extends State<BackBody> {
                 bodyShapePath: BodyPartPaths.leftGlute,
                 selectedColor: widget.selectedMuscleColor,
                 unselectedColor: widget.unselectedMuscleColor,
+                outlineColor: widget.outlineColor,
                 lineThickness: widget.lineThickness,
               ),
             ),
@@ -252,6 +264,7 @@ class _BackBodyState extends State<BackBody> {
                 bodyShapePath: BodyPartPaths.rightGlute,
                 selectedColor: widget.selectedMuscleColor,
                 unselectedColor: widget.unselectedMuscleColor,
+                outlineColor: widget.outlineColor,
                 lineThickness: widget.lineThickness,
               ),
             ),
@@ -268,6 +281,7 @@ class _BackBodyState extends State<BackBody> {
                   bodyShapePath: BodyPartPaths.leftHamstring,
                   selectedColor: widget.selectedMuscleColor,
                   unselectedColor: widget.unselectedMuscleColor,
+                  outlineColor: widget.outlineColor,
                   lineThickness: widget.lineThickness,
                 ),
               ),
@@ -285,6 +299,7 @@ class _BackBodyState extends State<BackBody> {
                   bodyShapePath: BodyPartPaths.rightHamstring,
                   selectedColor: widget.selectedMuscleColor,
                   unselectedColor: widget.unselectedMuscleColor,
+                  outlineColor: widget.outlineColor,
                   lineThickness: widget.lineThickness,
                 ),
               ),
@@ -300,6 +315,7 @@ class _BackBodyState extends State<BackBody> {
                 bodyShapePath: BodyPartPaths.leftCalf,
                 selectedColor: widget.selectedMuscleColor,
                 unselectedColor: widget.unselectedMuscleColor,
+                outlineColor: widget.outlineColor,
                 lineThickness: widget.lineThickness,
               ),
             ),
@@ -314,6 +330,7 @@ class _BackBodyState extends State<BackBody> {
                 bodyShapePath: BodyPartPaths.rightCalf,
                 selectedColor: widget.selectedMuscleColor,
                 unselectedColor: widget.unselectedMuscleColor,
+                outlineColor: widget.outlineColor,
                 lineThickness: widget.lineThickness,
               ),
             ),
