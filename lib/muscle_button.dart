@@ -32,6 +32,7 @@ class MuscleButton extends StatelessWidget {
           isActive: provider.isSelected(bodyPartName),
           activeColor: selectedColor,
           passiveColor: unselectedColor,
+          outlineColor: outlineColor,
           strokeWidth: lineThickness,
         ),
       ),

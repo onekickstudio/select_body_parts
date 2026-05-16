@@ -6,6 +6,7 @@ class MusclePathPainter extends CustomPainter {
   final bool isActive;
   final Color activeColor;
   final Color passiveColor;
+  final Color outlineColor;
   final double strokeWidth;
 
   static final Map<String, Path> _parsedPaths = {};
@@ -15,6 +16,7 @@ class MusclePathPainter extends CustomPainter {
     required this.isActive,
     this.activeColor = Colors.red,
     this.passiveColor = Colors.white,
+    this.outlineColor = Colors.black,
     this.strokeWidth = 0,
   });
 
@@ -41,7 +43,7 @@ class MusclePathPainter extends CustomPainter {
 
     if (strokeWidth > 0) {
       final strokePaint = Paint()
-        ..color = isActive ? activeColor : passiveColor
+        ..color = outlineColor
         ..style = PaintingStyle.stroke
         ..strokeWidth = strokeWidth;
       canvas.drawPath(path, strokePaint);
