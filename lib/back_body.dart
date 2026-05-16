@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:select_body_parts/body_part_paths.dart';
 import 'package:select_body_parts/muscle_button.dart';
@@ -25,6 +26,7 @@ class BackBody extends StatefulWidget {
 
 class _BackBodyState extends State<BackBody> {
   final _svgReady = Completer<void>();
+  late SvgPicture _svg;
 
   @override
   void initState() {
@@ -35,7 +37,16 @@ class _BackBodyState extends State<BackBody> {
   Future<void> _precacheSvg() async {
     if (_svgReady.isCompleted) return;
     try {
-      SvgPicture.asset('assets/back_body.svg');
+      final AssetManifest manifest =
+          await AssetManifest.loadFromAssetBundle(rootBundle);
+      final List<String> svgAssetPaths = manifest
+          .listAssets()
+          .where((path) => path.toLowerCase().endsWith('back_body.svg'))
+          .toList();
+
+      String rawXmlContent = await rootBundle.loadString(svgAssetPaths[0]);
+      _svg = SvgPicture.string(rawXmlContent);
+
       _svgReady.complete();
     } catch (_) {
       _svgReady.completeError('Failed to load back_body.svg');
@@ -58,14 +69,7 @@ class _BackBodyState extends State<BackBody> {
                   if (snapshot.connectionState != ConnectionState.done) {
                     return const SizedBox.shrink();
                   }
-                  return SvgPicture.asset(
-                    'assets/back_body.svg',
-                    colorFilter: widget.bodyOutlineColor != null
-                        ? ColorFilter.mode(
-                            widget.bodyOutlineColor!, BlendMode.srcIn)
-                        : null,
-                    placeholderBuilder: (_) => const SizedBox.shrink(),
-                  );
+                  return _svg;
                 },
               ),
             ),

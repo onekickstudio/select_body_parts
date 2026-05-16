@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:select_body_parts/body_part_paths.dart';
 import 'package:select_body_parts/muscle_button.dart';
@@ -8,14 +9,12 @@ import 'package:select_body_parts/muscle_button.dart';
 class FrontBody extends StatefulWidget {
   final Color selectedMuscleColor;
   final Color unselectedMuscleColor;
-  final Color? bodyOutlineColor;
   final double lineThickness;
 
   const FrontBody({
     super.key,
     this.selectedMuscleColor = Colors.red,
     this.unselectedMuscleColor = Colors.white,
-    this.bodyOutlineColor,
     this.lineThickness = 0,
   });
 
@@ -25,6 +24,7 @@ class FrontBody extends StatefulWidget {
 
 class _FrontBodyState extends State<FrontBody> {
   final _svgReady = Completer<void>();
+  late SvgPicture _svg;
 
   @override
   void initState() {
@@ -35,22 +35,16 @@ class _FrontBodyState extends State<FrontBody> {
   Future<void> _precacheSvg() async {
     if (_svgReady.isCompleted) return;
     try {
-      SvgPicture.asset(
-        'assets/front_body.svg',
-        package: 'select_body_parts',
-        imageBuilder: (_, child) {
-          debugPrint('Returning FrontBody SVG precache.');
-          return child;
-        },
-        placeholderBuilder: (_) {
-          debugPrint('Returning FrontBody placeholder widget precache.');
-          return const SizedBox.shrink();
-        },
-        errorBuilder: (_, error, stackTrace) {
-          debugPrint('PRECACHE: $error');
-          return const SizedBox.shrink();
-        },
-      );
+      final AssetManifest manifest =
+          await AssetManifest.loadFromAssetBundle(rootBundle);
+      final List<String> svgAssetPaths = manifest
+          .listAssets()
+          .where((path) => path.toLowerCase().endsWith('front_body.svg'))
+          .toList();
+
+      String rawXmlContent = await rootBundle.loadString(svgAssetPaths[0]);
+      _svg = SvgPicture.string(rawXmlContent);
+
       _svgReady.complete();
     } catch (_) {
       _svgReady.completeError('Failed to load front_body.svg');
@@ -76,26 +70,7 @@ class _FrontBodyState extends State<FrontBody> {
                       if (snapshot.connectionState != ConnectionState.done) {
                         return const SizedBox.shrink();
                       }
-                      return SvgPicture.asset(
-                        'assets/front_body.svg',
-                        package: 'select_body_parts',
-                        colorFilter: widget.bodyOutlineColor != null
-                            ? ColorFilter.mode(
-                                widget.bodyOutlineColor!, BlendMode.srcIn)
-                            : null,
-                        imageBuilder: (_, child) {
-                          debugPrint('Returning FrontBody SVG.');
-                          return child;
-                        },
-                        placeholderBuilder: (_) {
-                          debugPrint('Returning FrontBody placeholder widget.');
-                          return const SizedBox.shrink();
-                        },
-                        errorBuilder: (_, error, stackTrace) {
-                          debugPrint('$error');
-                          return const SizedBox.shrink();
-                        },
-                      );
+                      return _svg;
                     },
                   ),
                 ),
